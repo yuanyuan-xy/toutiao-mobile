@@ -5,6 +5,9 @@
       left-arrow
       @click-left="onClickLeft"
     />
+    <van-form
+    validate-first
+    >
     <!-- 输入框 -->
     <van-cell-group>
       <van-field
@@ -12,6 +15,7 @@
         icon-prefix="toutiao"
         left-icon="shouji"
         placeholder="请输入电话号"
+        :rules="rules.mobile"
       />
       <van-field
         v-model="user.code"
@@ -19,6 +23,7 @@
         icon-prefix="toutiao"
         left-icon="yanzhengma"
         placeholder="请输入验证码"
+        :rules="rules.code"
       >
         <template #button>
           <van-button
@@ -40,6 +45,7 @@
       @click="userLogin"
       >登录</van-button>
     </div>
+    </van-form>
   </div>
 </template>
 
@@ -50,8 +56,26 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
+        mobile: '17612216832',
+        code: '246810'
+      },
+      rules: {
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'onBlur' },
+          {
+            pattern: /^(13[0-9]|17[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            message: '请输入正确的手机号',
+            trigger: 'onBlur'
+          }
+        ],
+        code: [
+          { required: true, message: '请输入验证码', trigger: 'onBlur' },
+          {
+            pattern: /^\d{6}$/,
+            message: '验证码格式不正确',
+            trigger: 'onBlur'
+          }
+        ]
       }
     }
   },
@@ -64,8 +88,12 @@ export default {
         const res = await login(this.user)
         // 成功后
         console.log(res)
-      } catch (err) {
-        console.log(err)
+        localStorage.setItem('user', res.data.data)
+        // 消息通知
+        this.$toast.success('登陆成功')
+        this.$router.push('/')
+      } catch {
+        this.$toast.fail('登录失败')
       }
     }
   }
