@@ -1,14 +1,15 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div class="login-container">
+      登陆页面
   </div>
 </template>
 
 <script>
 export default {
-
+  name: 'LoginIndex'
 }
 </script>
 
-<style lang="less">
+<style>
+
 </style>
