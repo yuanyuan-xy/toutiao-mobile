@@ -84,6 +84,12 @@ export default {
       this.$router.back()
     },
     async userLogin () {
+      // loading效果
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        duration: 0
+      })
       try {
         const res = await login(this.user)
         // 成功后
