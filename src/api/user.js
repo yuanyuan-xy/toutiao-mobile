@@ -8,3 +8,10 @@ export const login = data => {
     data
   })
 }
+// 获取验证码
+export const getSes = mobile => {
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/sms/codes/${mobile}`
+  })
+}

@@ -7,6 +7,11 @@
     />
     <van-form
     validate-first
+    :show-error="false"
+    :show-error-message="false"
+    ref="login-form"
+    @submit="userLogin"
+    @failed="onFailed"
     >
     <!-- 输入框 -->
     <van-cell-group>
@@ -15,6 +20,7 @@
         icon-prefix="toutiao"
         left-icon="shouji"
         placeholder="请输入电话号"
+        name="mobile"
         :rules="rules.mobile"
       />
       <van-field
@@ -26,11 +32,20 @@
         :rules="rules.code"
       >
         <template #button>
+          <van-count-down
+          v-if="showCountDown"
+          :time="1000 * 60"
+          format="ss s"
+          @finish="showCountDown = false"
+          />
           <van-button
+          v-else
           class="getCode"
           size="small"
           type="primary"
+          :loading="sendSesLoading"
           round
+          @click.prevent="onSendSes"
           >获取验证码</van-button>
         </template>
       </van-field>
@@ -42,7 +57,6 @@
       type="info"
       block
       :hairline="false"
-      @click="userLogin"
       >登录</van-button>
     </div>
     </van-form>
@@ -50,7 +64,7 @@
 </template>
 
 <script>
-import { login } from '@/api/user.js'
+import { login, getSes } from '@/api/user.js'
 export default {
   name: 'LoginIndex',
   data () {
@@ -76,7 +90,9 @@ export default {
             trigger: 'onBlur'
           }
         ]
-      }
+      },
+      showCountDown: false, // 倒计时显示
+      sendSesLoading: false // 发送验证码loading
     }
   },
   methods: {
@@ -93,14 +109,51 @@ export default {
       try {
         const res = await login(this.user)
         // 成功后
-        console.log(res)
-        localStorage.setItem('user', res.data.data)
         // 消息通知
         this.$toast.success('登陆成功')
         this.$router.push('/')
+        // 登陆成功后将token存入vuex中
+        this.$store.commit('setUser', res.data.data)
       } catch {
         this.$toast.fail('登录失败')
       }
+    },
+    onFailed (error) {
+      console.log(11)
+      if (error.errors[0]) {
+        this.$toast({
+          message: error.errors[0].message,
+          position: 'top'
+        })
+      }
+    },
+    async onSendSes () {
+      try {
+        // 验证手机号
+        await this.$refs['login-form'].validate('mobile')
+        // 展示loading效果
+        this.sendSesLoading = true
+        // 验证成功发送验证码
+        await getSes(this.user.mobile)
+        // 显示倒计时
+        this.showCountDown = true
+      } catch (err) {
+        // 定义发送失败的提示信息
+        let message = ''
+        if (err && err.response && err.response.status === 429) {
+          message = '发送间隔为一分钟'
+        } else if (err.name === 'mobile') {
+          message = err.message
+        } else {
+          message = '发送失败,请稍后再试'
+        }
+        this.$toast({
+          message,
+          position: 'top'
+        })
+      }
+      // 无论是白都将按钮得loading效果关闭
+      this.sendSesLoading = false
     }
   }
 }
