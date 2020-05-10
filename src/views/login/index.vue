@@ -102,7 +102,7 @@ export default {
     async userLogin () {
       // loading效果
       this.$toast.loading({
-        message: '加载中...',
+        message: '登录中...',
         forbidClick: true,
         duration: 0
       })
