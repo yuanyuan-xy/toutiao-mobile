@@ -1,17 +1,41 @@
 <template>
   <div class="home-container">
     <van-tabs v-model="active">
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab
+      :key="item.id"
+      v-for="item in channelsList"
+      :title="item.name"
+      >
+      <article-list></article-list>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+import { getChannels } from '@/api/user'
+// 引入文章列表组件
+import ArticleList from './components/article-list'
 export default {
-  name: 'HomeIndex'
+  name: 'HomeIndex',
+  data () {
+    return {
+      active: 0,
+      channelsList: []
+    }
+  },
+  methods: {
+    async getUserChannels () {
+      const res = await getChannels()
+      this.channelsList = res.data.data.channels
+    }
+  },
+  created () {
+    this.getUserChannels()
+  },
+  components: {
+    ArticleList
+  }
 }
 </script>
 

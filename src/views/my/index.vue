@@ -116,10 +116,10 @@ export default {
       this.currentUser = res.data.data
     },
     onlogout () {
-      // 推出操作
+      // 退出操作
       this.$dialog.confirm({
-        title: '标题',
-        message: '弹窗内容'
+        title: '提示',
+        message: '确定退出吗'
       })
         .then(() => {
           // on confirm
