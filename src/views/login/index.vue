@@ -111,7 +111,7 @@ export default {
         // 成功后
         // 消息通知
         this.$toast.success('登陆成功')
-        this.$router.push('/')
+        this.$router.back()
         // 登陆成功后将token存入vuex中
         this.$store.commit('setUser', res.data.data)
       } catch {
