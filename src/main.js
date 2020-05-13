@@ -13,6 +13,9 @@ import 'amfe-flexible'
 // 全局样式
 import '@/styles/index.less'
 
+// 加载过滤时间的dayjs
+import './utils/dayjs'
+
 // 使用vant
 Vue.use(Vant)
 

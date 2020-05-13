@@ -53,6 +53,15 @@ export default {
 
 <style scoped lang="less">
 .home-container {
+  /deep/ .van-tab {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+  /deep/ .van-tabs__line {
+    width: 25px !important;
+    bottom: 20px;
+    background-color: #3196fa;
+  }
   /deep/ .van-nav-bar__title {
     max-width: none;
   }
