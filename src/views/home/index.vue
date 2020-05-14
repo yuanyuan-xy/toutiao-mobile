@@ -34,7 +34,12 @@
     close-icon-position="top-left"
     get-container="body"
     >
-    <channel-edit :channels="channelsList"></channel-edit>
+    <channel-edit
+    :channels="channelsList"
+    :activeChannels="active"
+    @close-popup="isPopupShow = false"
+    @switch-channel="active = $event"
+    ></channel-edit>
     </van-popup>
   </div>
 </template>
