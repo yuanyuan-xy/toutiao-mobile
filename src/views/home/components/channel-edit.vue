@@ -153,8 +153,22 @@ export default {
       .van-grid-item__text {
         color: #fff;
       }
-      background-color:red;
+      background: linear-gradient(125deg,#55efc4,#2d3436,#778ca3,#3867d6,#fc5c65,#2d3436,#778ca3,#05c46b,#f7b731);
+      background-size: 400%;
+      background-repeat: no-repeat;
+      animation: moveBody 10s infinite linear;
     }
   }
+}
+ @keyframes moveBody {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    0% {
+        background-position: 0% 50%;
+    }
 }
 </style>
