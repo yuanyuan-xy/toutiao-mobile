@@ -20,7 +20,22 @@
       >
       <article-list :channel="item"></article-list>
       </van-tab>
+      <div slot="nav-right" class="wap-nav-placeholder"></div>
+      <div slot="nav-right" class="wap-nav-warp">
+        <van-icon name="wap-nav" @click="isPopupShow = true" />
+      </div>
     </van-tabs>
+    <!-- 弹出层 -->
+    <van-popup
+    v-model="isPopupShow"
+    position="bottom"
+    class="popupStyle"
+    closeable
+    close-icon-position="top-left"
+    get-container="body"
+    >
+    <channel-edit :channels="channelsList"></channel-edit>
+    </van-popup>
   </div>
 </template>
 
@@ -28,12 +43,15 @@
 import { getChannels } from '@/api/user'
 // 引入文章列表组件
 import ArticleList from './components/article-list'
+// 引入弹出层的内容组件
+import ChannelEdit from './components/channel-edit'
 export default {
   name: 'HomeIndex',
   data () {
     return {
       active: 0,
-      channelsList: []
+      channelsList: [],
+      isPopupShow: true // 弹出层
     }
   },
   methods: {
@@ -46,7 +64,8 @@ export default {
     this.getUserChannels()
   },
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   }
 }
 </script>
@@ -54,6 +73,7 @@ export default {
 <style scoped lang="less">
 .home-container {
   /deep/ .van-tab {
+    height: 41px;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
   }
@@ -77,5 +97,24 @@ export default {
       font-size: 14px;
     }
   }
+  .wap-nav-warp {
+    position: fixed;
+    height: 40px;
+    width: 30px;
+    top: 44px;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    opacity: .9;
+  }
+  .wap-nav-placeholder {
+    width: 30px;
+    flex-shrink: 0;
+  }
+}
+.popupStyle {
+  height: 100%;
 }
 </style>
