@@ -1,11 +1,29 @@
 <template>
   <div class="articleListContainer">
+    <!-- 下拉刷新成功的语句为,在刷新成功后显示
+    :success-text="refreshSuccessText"
+    -->
     <van-pull-refresh
     v-model="isRefreshLoading"
-    :success-text="refreshSuccessText"
     :success-duration="1000"
+    :head-height="100 "
     @refresh="onRefresh"
     >
+      <template #pulling="props">
+        <img
+          class="doge"
+          src="./01.jpg"
+          :style="{ transform: `scale(${props.distance / 80})` }"
+        />
+      </template>
+      <template slot="loosing">
+        <img class="doge" src="./01.jpg" />
+      </template>
+
+      <!-- 加载提示 -->
+      <template slot="loading">
+        <img class="doge" src="./02.jpg" />
+      </template>
       <van-list
         v-model="loading"
         :finished="finished"
@@ -81,7 +99,8 @@ export default {
       this.isRefreshLoading = false
 
       // 成功提示文案
-      this.refreshSuccessText = `更新了${results.length}条数据`
+      // this.refreshSuccessText = `更新了${results.length}条数据`
+      this.$toast(`更新了${results.length}条数据`)
     }
   }
 }
@@ -95,5 +114,17 @@ export default {
   top: 90px;
   bottom: 50px;
   overflow-y: auto;
+}
+.doge {
+  width: 140px;
+  height: 90px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+/deep/ .van-pull-refresh__head {
+  font-size: 20px;
+  color: #fff;
+  line-height: 100px;
+  background-color: #e84393;
 }
 </style>

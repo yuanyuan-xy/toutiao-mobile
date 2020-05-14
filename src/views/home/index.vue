@@ -113,9 +113,20 @@ export default {
     align-items: center;
     background-color: #fff;
     opacity: .9;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      bottom: 0;
+      top: 0;
+      left: -1px;
+      background: url('./line.png');
+    }
   }
   .wap-nav-placeholder {
     width: 30px;
+    height: 40px;
+    border-bottom: 1px solid #ccc;
     flex-shrink: 0;
   }
 }
