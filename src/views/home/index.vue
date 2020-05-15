@@ -50,6 +50,8 @@ import { getChannels } from '@/api/user'
 import ArticleList from './components/article-list'
 // 引入弹出层的内容组件
 import ChannelEdit from './components/channel-edit'
+import { mapState } from 'vuex'
+import { getItem } from '@/utils/storage'
 export default {
   name: 'HomeIndex',
   data () {
@@ -61,8 +63,24 @@ export default {
   },
   methods: {
     async getUserChannels () {
-      const res = await getChannels()
-      this.channelsList = res.data.data.channels
+      let channels = []
+      // 如果登陆了,就从接口获取数据
+      if (this.user) {
+        const res = await getChannels()
+        channels = res.data.data.channels
+      } else {
+        // 如果没有登陆
+        const localStorageChannels = getItem('nologin-channels')
+        // 本地存储有记录,就把本地存储的数据赋值给频道列表
+        if (localStorageChannels) {
+          channels = localStorageChannels
+        } else {
+          // 本地存储没有记录,就把本地存储的数据赋值给频道列表
+          const res = await getChannels()
+          channels = res.data.data.channels
+        }
+      }
+      this.channelsList = channels
     }
   },
   created () {
@@ -71,6 +89,9 @@ export default {
   components: {
     ArticleList,
     ChannelEdit
+  },
+  computed: {
+    ...mapState(['user'])
   }
 }
 </script>
