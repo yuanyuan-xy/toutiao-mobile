@@ -8,10 +8,11 @@
         placeholder="请输入搜索关键词"
         @search="onSearch"
         @cancel="$router.back()"
+        @focus="onFocus"
       />
     </form>
     <!-- FIXME:搜索结果 -->
-    <search-results v-if="isResultShow" />
+    <search-results v-if="isResultShow" :search-text="searchText" />
     <!-- FIXME:搜索建议 -->
     <search-suggestion
       v-else-if="searchText"
@@ -41,7 +42,10 @@ export default {
   },
   methods: {
     onSearch () {
-      console.log(11)
+      this.isResultShow = true
+    },
+    onFocus () {
+      this.isResultShow = false
     }
   }
 }
