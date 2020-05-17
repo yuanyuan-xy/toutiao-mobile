@@ -12,8 +12,11 @@
     </form>
     <!-- FIXME:搜索结果 -->
     <search-results v-if="isResultShow" />
-    <!-- FIXME:搜索提示 -->
-    <search-suggestion v-else-if="searchText" />
+    <!-- FIXME:搜索建议 -->
+    <search-suggestion
+      v-else-if="searchText"
+      :search-text="searchText"
+    />
     <!-- FIXME:搜索历史 -->
     <search-history v-else />
   </div>
