@@ -108,7 +108,9 @@ export default {
     }
   },
   created () {
-    this.loadCurrentUser()
+    if (this.user) {
+      this.loadCurrentUser()
+    }
   },
   methods: {
     async loadCurrentUser () {
