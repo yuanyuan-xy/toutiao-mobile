@@ -29,7 +29,7 @@
       <van-grid-item
       v-for="(channel, index) in recommendChannels"
       :key="index"
-      :text="channel.name"
+      :text="'+' + channel.name"
       @click="addChannel(channel)"
       />
     </van-grid>

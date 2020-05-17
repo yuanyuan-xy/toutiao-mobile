@@ -8,6 +8,7 @@
         icon="search"
         type="info"
         round
+        to="/search"
         size="small"
       >搜索</van-button>
     </van-nav-bar>
@@ -58,7 +59,7 @@ export default {
     return {
       active: 0,
       channelsList: [],
-      isPopupShow: true // 弹出层
+      isPopupShow: false // 弹出层
     }
   },
   methods: {
