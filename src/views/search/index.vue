@@ -20,7 +20,13 @@
       @search="onSearch"
     />
     <!-- FIXME:搜索历史 -->
-    <search-history v-else :search-history="searchHistory" />
+    <search-history
+    v-else
+    :search-history="searchHistory"
+    @search="onSearch"
+    @delHistory="delHistory"
+    @delAllSearchHistory="delAllSearchHistory"
+    />
   </div>
 </template>
 
@@ -28,7 +34,7 @@
 import searchHistory from './components/search-history'
 import searchResults from './components/search-results'
 import searchSuggestion from './components/search-suggestion'
-import { getSearchHistory } from '@/api/search'
+import { getSearchHistory, delSearchHistory } from '@/api/search'
 import { setItem, getItem } from '@/utils/storage'
 import { mapState } from 'vuex'
 export default {
@@ -49,6 +55,7 @@ export default {
     this.loadSearchHistory()
   },
   methods: {
+    // 点击回车或搜索
     onSearch (searchText) {
       this.searchText = searchText
       const index = this.searchHistory.indexOf(searchText)
@@ -57,16 +64,31 @@ export default {
         this.searchHistory.splice(index, 1)
       }
       this.searchHistory.unshift(searchText)
-      setItem('search-histroy', this.searchHistory)
+      setItem('search-history', this.searchHistory)
       this.isResultShow = true
     },
+    // 获得搜索历史
     async loadSearchHistory () {
-      let searchHistory = getItem('search-histroy') || []
+      let searchHistory = getItem('search-history') || []
       if (this.user) {
         const { data } = await getSearchHistory()
         searchHistory = [...new Set([...searchHistory, ...data.data.keywords])]
       }
       this.searchHistory = searchHistory
+    },
+    // 删除历史记录
+    async delHistory (index) {
+      // TODO: 这里不太明白
+      await delSearchHistory()
+      this.searchHistory.splice(index, 1)
+      setItem('search-history', this.searchHistory)
+    },
+    // 删除全部历史记录
+    async delAllSearchHistory () {
+      // TODO: 这里不太明白
+      await delSearchHistory()
+      this.searchHistory = []
+      setItem('search-history', this.searchHistory)
     }
   },
   computed: {

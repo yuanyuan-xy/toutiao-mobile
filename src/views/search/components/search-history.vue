@@ -2,7 +2,7 @@
   <div class="searchHistory">
     <van-cell title="搜索历史">
       <div v-if="isDelShow">
-        <span>全部删除</span>
+        <span @click="$emit('delAllSearchHistory')">全部删除</span>
         &nbsp;&nbsp;
         <span @click="isDelShow=false">完成</span>
       </div>
@@ -15,7 +15,8 @@
       v-for="(item, index) in searchHistory"
       :key="index"
     >
-    <van-icon :name="isDelShow ? 'clear' : ''"/>
+    <span slot="title" @click="$emit('search', item)">{{item}}</span>
+    <van-icon @click="$emit('delHistory', index)" :name="isDelShow ? 'clear' : ''"/>
     </van-cell>
   </div>
 </template>
