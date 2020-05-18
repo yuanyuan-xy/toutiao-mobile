@@ -28,17 +28,38 @@
           :type="article.is_followed ? 'default' : 'info'"
           round
           :icon="article.is_followed ? '' : 'plus'"
-          @click="article.is_followed = false"
+          @click="isFollowUser"
         >{{article.is_followed ? '取消关注' : '关注'}}</van-button>
       </van-cell>
       <!-- 文章内容 -->
       <div class="article-content" v-html="article.content"></div>
+    </div>
+    <!-- 底部区域 -->
+    <div class="footer">
+      <van-button type="default">默认按钮</van-button>
+      <van-icon
+        name="comment-o"
+        info="123"
+        color="#777"
+      />
+      <van-icon
+        :color="article.is_collected ? 'orange' : '#777'"
+        :name="article.is_collected ? 'star' : 'star-o'"
+        @click="onCollect"
+      />
+      <van-icon
+        :color="article.attitude === 1 ? 'hotpink' : '#777'"
+        :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
+        @click="onLike"
+      />
+      <van-icon name="share" color="#777777"></van-icon>
     </div>
   </div>
 </template>
 
 <script>
 import { getArticleById } from '@/api/article'
+import { followUser, DelFollowUser } from '@/api/user'
 export default {
   name: 'ArticleIndex',
   props: {
@@ -56,7 +77,20 @@ export default {
     async loadArticle () {
       const { data } = await getArticleById(this.articleId)
       this.article = data.data
-    }
+    },
+    async isFollowUser () {
+      // await followUser
+      if (this.article.is_followed) {
+        // 取消关注
+        DelFollowUser(this.article.aut_id)
+      } else {
+        // 添加关注
+        await followUser(this.article.aut_id)
+      }
+      this.article.is_followed = !this.article.is_followed
+    },
+    onCollect () {},
+    onLike () {}
   },
   created () {
     this.loadArticle()
@@ -77,5 +111,16 @@ export default {
       height: 36px;
     }
   }
+}
+.footer {
+  height: 50px;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>
