@@ -2,6 +2,12 @@
   <!-- <div class="articleItem">{{article.title}}</div> -->
   <van-cell
   title="单元格"
+  :to="{
+    name: 'article',
+      params: {
+        articleId: article.art_id
+      }
+  }"
   >
   <!-- 文章标题 -->
   <div slot="title" class="article-title van-multi-ellipsis--l3">{{article.title}}</div>

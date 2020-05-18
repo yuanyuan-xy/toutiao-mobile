@@ -72,6 +72,7 @@ export default {
       let searchHistory = getItem('search-history') || []
       if (this.user) {
         const { data } = await getSearchHistory()
+        console.log(data.data.keywords)
         searchHistory = [...new Set([...searchHistory, ...data.data.keywords])]
       }
       this.searchHistory = searchHistory
