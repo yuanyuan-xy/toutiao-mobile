@@ -41,9 +41,12 @@ export const followUser = userId => {
   })
 }
 // 取消关注用户
-export const DelFollowUser = userId => {
+export const delFollowUser = userId => {
   return request({
     method: 'DELETE',
-    url: `/app/v1_0/user/followings/${userId}`
+    url: `/app/v1_0/user/followings/${userId}`,
+    data: {
+      target: userId
+    }
   })
 }
