@@ -88,8 +88,10 @@
      position="bottom"
     >
     <comment-reply
+    v-if="isReplyShow"
     @close="isReplyShow=false"
-    :comment="currentComment"
+    :currentComment="currentComment"
+    :articleId="articleId"
     ></comment-reply>
     </van-popup>
   </div>
@@ -269,5 +271,8 @@ export default {
     color: hotpink;
     padding: 0;
   }
+}
+.replyPopup {
+  z-index: 9999999;
 }
 </style>

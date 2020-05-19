@@ -33,6 +33,10 @@ export default {
     commentList: {
       type: Array,
       default: () => []
+    },
+    type: {
+      type: String,
+      default: 'a'
     }
   },
   components: {
@@ -51,7 +55,7 @@ export default {
   methods: {
     async onLoad () {
       const { data } = await getComments({
-        type: 'a',
+        type: this.type,
         source: this.source.toString(),
         offset: this.offset,
         limit: this.limit
