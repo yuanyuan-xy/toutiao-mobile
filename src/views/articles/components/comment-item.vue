@@ -10,8 +10,11 @@
       <div slot="title">
         <div class="title-warp">
           <span class="user-name">{{comment.aut_name}}</span>
-          <div class="like-warp">
-            <van-icon name="good-job-o" />
+          <div class="like-warp" @click="onLikeCilck">
+            <van-icon
+            :name="comment.is_liking ? 'good-job': 'good-job-o'"
+            :class="{'like-icon': comment.is_liking}"
+            />
             <span class="like-count">{{comment.like_count}}</span>
           </div>
         </div>
@@ -19,13 +22,18 @@
       </div>
       <div slot="label">
         <span class="pubdate">{{comment.pubdate | dateTime('MM-DD HH:mm')}}</span>
-        <van-button type="default" round size="mini">{{comment.reply_count}}回复</van-button>
+        <van-button
+        type="default"
+        round
+        size="mini"
+        >{{comment.reply_count}}回复</van-button>
       </div>
     </van-cell>
   </div>
 </template>
 
 <script>
+import { likeComment, delLikeComment } from '@/api/comment'
 export default {
   props: {
     comment: {
@@ -33,7 +41,20 @@ export default {
       required: true
     }
   },
-  name: 'CommentItem'
+  name: 'CommentItem',
+  methods: {
+    async onLikeCilck () {
+      if (this.comment.is_liking) {
+        await delLikeComment(this.comment.com_id)
+        this.comment.like_count--
+      } else {
+        console.log(11)
+        await likeComment(this.comment.com_id)
+        this.comment.like_count++
+      }
+      this.comment.is_liking = !this.comment.is_liking
+    }
+  }
 }
 </script>
 
@@ -54,6 +75,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    .like-icon {
+      color: red;
+    }
   }
 }
 .comment-content {
