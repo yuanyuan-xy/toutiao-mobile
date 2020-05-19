@@ -11,6 +11,7 @@
       v-for="(comment, index) in commentList"
       :key="index"
       :comment="comment"
+      @showReplyPopup="$emit('showReplyPopup')"
       ></comment-item>
       <!-- <van-cell
       v-for="(item, index) in commentList"
@@ -28,6 +29,10 @@ export default {
     source: {
       type: [Number, String, Object],
       required: true
+    },
+    commentList: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
@@ -36,7 +41,7 @@ export default {
   name: 'commentIndex',
   data () {
     return {
-      commentList: [],
+      // commentList: [],
       loading: false,
       finished: false,
       offset: null,
@@ -61,6 +66,8 @@ export default {
       } else {
         this.finished = true
       }
+      // 讲评论总数传到父组件
+      this.$emit('totalCount', data.data.total_count)
     }
   }
 }

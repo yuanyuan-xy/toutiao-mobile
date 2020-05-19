@@ -26,6 +26,7 @@
         type="default"
         round
         size="mini"
+        @click="$emit('showReplyPopup')"
         >{{comment.reply_count}}回复</van-button>
       </div>
     </van-cell>
@@ -48,7 +49,6 @@ export default {
         await delLikeComment(this.comment.com_id)
         this.comment.like_count--
       } else {
-        console.log(11)
         await likeComment(this.comment.com_id)
         this.comment.like_count++
       }

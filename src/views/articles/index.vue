@@ -39,15 +39,22 @@
       v-html="article.content"></div>
       <article-comment
       :source="articleId"
-      class="article-comment"
+      :commentList="commentList"
+      @totalCount="totalCount=$event"
+      @showReplyPopup="isReplyShow=true"
       ></article-comment>
     </div>
     <!-- 底部区域 -->
     <div class="footer">
-      <van-button type="primary" round class="comment-btn">写评论</van-button>
+      <van-button
+      type="primary"
+      round
+      class="comment-btn"
+      @click="isPostComShow=true"
+      >写评论</van-button>
       <van-icon
         name="comment-o"
-        info="123"
+        :info="totalCount"
         color="#777"
       />
       <van-button
@@ -65,6 +72,23 @@
       ></van-button>
       <van-icon name="share" color="#777777"></van-icon>
     </div>
+    <!-- 发表评论弹出层 -->
+    <van-popup
+    v-model="isPostComShow"
+     position="bottom"
+    >
+    <post-comment
+    :target="articleId"
+    @post-success="postSuccess"
+    />
+    </van-popup>
+    <!-- 评论回复弹出层 -->
+    <van-popup
+     v-model="isReplyShow"
+     position="bottom"
+    >
+    <comment-reply></comment-reply>
+    </van-popup>
   </div>
 </template>
 
@@ -73,10 +97,14 @@ import { getArticleById, collectArticle, delCollectArticle, delLikeArticle, like
 import { followUser, delFollowUser } from '@/api/user'
 import { ImagePreview } from 'vant'
 import articleComment from './components/article-comment'
+import postComment from './components/post-comment'
+import commentReply from './components/comment-reply'
 export default {
   name: 'ArticleIndex',
   components: {
-    articleComment
+    articleComment,
+    postComment,
+    commentReply
   },
   props: {
     articleId: {
@@ -89,7 +117,11 @@ export default {
       article: {},
       isFollowLoading: false,
       isCollectedLoaing: false,
-      isLikeLoading: false
+      isLikeLoading: false,
+      isPostComShow: false, // 发表评论弹出层是否开启
+      commentList: [],
+      totalCount: 0,
+      isReplyShow: false // 评论回复弹出层
     }
   },
   methods: {
@@ -161,6 +193,11 @@ export default {
         message: `${this.article.attitude !== 1 ? '取消' : '添加'}赞同`,
         duration: 800
       })
+    },
+    postSuccess (newObj) {
+      this.isPostComShow = false
+      this.commentList.unshift(newObj)
+      this.totalCount++
     }
   },
   created () {
