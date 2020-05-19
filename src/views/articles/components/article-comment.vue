@@ -7,22 +7,31 @@
       finished-text="已展示全部评论"
       @load="onLoad"
     >
-      <van-cell
+      <comment-item
+      v-for="(comment, index) in commentList"
+      :key="index"
+      :comment="comment"
+      ></comment-item>
+      <!-- <van-cell
       v-for="(item, index) in commentList"
       :key="index"
-      :title="item.content" />
+      :title="item.content" /> -->
     </van-list>
   </div>
 </template>
 
 <script>
 import { getComments } from '@/api/article'
+import commentItem from './comment-item'
 export default {
   props: {
     source: {
       type: [Number, String, Object],
       required: true
     }
+  },
+  components: {
+    commentItem
   },
   name: 'commentIndex',
   data () {
@@ -38,7 +47,7 @@ export default {
     async onLoad () {
       const { data } = await getComments({
         type: 'a',
-        source: this.source,
+        source: this.source.toString(),
         offset: this.offset,
         limit: this.limit
       })
