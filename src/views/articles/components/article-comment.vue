@@ -11,7 +11,7 @@
       v-for="(comment, index) in commentList"
       :key="index"
       :comment="comment"
-      @showReplyPopup="$emit('showReplyPopup')"
+      @showReplyPopup="$emit('showReplyPopup', $event)"
       ></comment-item>
       <!-- <van-cell
       v-for="(item, index) in commentList"

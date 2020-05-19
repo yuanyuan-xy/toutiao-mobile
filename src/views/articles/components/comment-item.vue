@@ -26,7 +26,7 @@
         type="default"
         round
         size="mini"
-        @click="$emit('showReplyPopup')"
+        @click="$emit('showReplyPopup', comment)"
         >{{comment.reply_count}}回复</van-button>
       </div>
     </van-cell>

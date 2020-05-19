@@ -41,7 +41,7 @@
       :source="articleId"
       :commentList="commentList"
       @totalCount="totalCount=$event"
-      @showReplyPopup="isReplyShow=true"
+      @showReplyPopup="replyClick"
       ></article-comment>
     </div>
     <!-- 底部区域 -->
@@ -87,7 +87,10 @@
      v-model="isReplyShow"
      position="bottom"
     >
-    <comment-reply></comment-reply>
+    <comment-reply
+    @close="isReplyShow=false"
+    :comment="currentComment"
+    ></comment-reply>
     </van-popup>
   </div>
 </template>
@@ -121,7 +124,8 @@ export default {
       isPostComShow: false, // 发表评论弹出层是否开启
       commentList: [],
       totalCount: 0,
-      isReplyShow: false // 评论回复弹出层
+      isReplyShow: false, // 评论回复弹出层
+      currentComment: {}
     }
   },
   methods: {
@@ -198,6 +202,10 @@ export default {
       this.isPostComShow = false
       this.commentList.unshift(newObj)
       this.totalCount++
+    },
+    replyClick (comment) {
+      this.currentComment = comment
+      this.isReplyShow = true
     }
   },
   created () {
