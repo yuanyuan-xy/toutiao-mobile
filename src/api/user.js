@@ -50,3 +50,11 @@ export const delFollowUser = userId => {
     }
   })
 }
+
+// 获取指定用户信息
+export const getUserInfo = userId => {
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/users/${userId}`
+  })
+}

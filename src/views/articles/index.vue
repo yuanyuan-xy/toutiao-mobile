@@ -16,6 +16,7 @@
         class="user-avatar"
         round
         :src="article.aut_photo"
+        @click="$router.push(`/user/${article.aut_id}`)"
         ></van-image>
         <!-- 作者姓名 -->
         <div slot="title" class="user-name">{{article.aut_name}}</div>

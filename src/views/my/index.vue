@@ -166,6 +166,8 @@ export default {
     }
   }
   .user-data {
+    display: flex;
+    flex-wrap: nowrap;
     background-color: transparent;
     margin: 0 20px;
     .van-grid-item {
