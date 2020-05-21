@@ -66,3 +66,12 @@ export const getUserProfile = () => {
     url: '/app/v1_0/user/profile'
   })
 }
+
+// 修改个人资料
+export const editUserProfile = data => {
+  return request({
+    method: 'PATCH',
+    url: '/app/v1_0/user/profile',
+    data
+  })
+}

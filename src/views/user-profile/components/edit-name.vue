@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { editUserProfile } from '@/api/user'
 export default {
   name: 'EditName',
   props: {
@@ -35,8 +36,17 @@ export default {
     }
   },
   methods: {
-    onClickRight () {
-      console.log(11)
+    async onClickRight () {
+      this.$toast.loading({
+        message: '修改中',
+        forbidclick: true
+      })
+      await editUserProfile({ name: this.message })
+      this.$emit('input', this.message)
+      this.$emit('close')
+      this.$toast.success({
+        message: '修改成功'
+      })
     }
   }
 }
