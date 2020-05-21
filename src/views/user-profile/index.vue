@@ -7,9 +7,11 @@
       left-arrow
       @click-left="$router.back()"
     />
+    <input type="file" hidden ref="file" @change="onChooseFile">
     <van-cell
      title="头像"
      is-link
+     @click="$refs.file.click()"
     >
       <van-image
        width="30"
@@ -45,7 +47,7 @@
      :style="{ height: '100%' }"
     >
       <edit-name
-      v-if="isEditNameShow"
+       v-if="isEditNameShow"
        @close="isEditNameShow = false"
        v-model="user.name"
       />
@@ -58,6 +60,7 @@
      position="bottom"
     >
       <edit-gender
+       v-if="isEditGenderShow"
        @close="isEditGenderShow = false"
        v-model="user.gender"
       />
@@ -71,8 +74,24 @@
      position="bottom"
     >
       <edit-birthday
+       v-if="isEditBirthdayShow"
        @close="isEditBirthdayShow = false"
        v-model="user.birthday"
+      />
+    </van-popup>
+    <!-- /修改用户生日 -->
+    <!-- FIXME:修改用户头像 -->
+    <van-popup
+     class="edit-avatar"
+     v-model="isEditAvatarShow"
+     position="bottom"
+     style="height: 100%"
+    >
+      <edit-avatar
+       v-if="isEditAvatarShow"
+       :file="preImage"
+       @update-photo="user.photo = $event"
+       @close="isEditAvatarShow = false"
       />
     </van-popup>
     <!-- /修改用户生日 -->
@@ -84,19 +103,23 @@ import { getUserProfile } from '@/api/user'
 import EditName from './components/edit-name'
 import EditGender from './components/edit-gender'
 import EditBirthday from './components/edit-birthday'
+import EditAvatar from './components/edit-avatar'
 export default {
   name: 'UpdateProfile',
   components: {
     EditName,
     EditGender,
-    EditBirthday
+    EditBirthday,
+    EditAvatar
   },
   data () {
     return {
       isEditNameShow: false,
       isEditGenderShow: false,
       isEditBirthdayShow: false,
-      user: {}
+      isEditAvatarShow: false,
+      user: {},
+      preImage: null
     }
   },
   created () {
@@ -106,6 +129,12 @@ export default {
     async loadUserProfile () {
       const { data } = await getUserProfile()
       this.user = data.data
+    },
+    onChooseFile () {
+      const file = this.$refs.file.files[0]
+      this.preImage = file
+      this.isEditAvatarShow = true
+      this.$refs.file.value = ''
     }
   }
 }
@@ -114,5 +143,10 @@ export default {
 <style scoped lang="less">
 .edit-name {
   background-color: #ccc;
+}
+.edit-avatar {
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
 }
 </style>

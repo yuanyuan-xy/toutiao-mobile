@@ -2,7 +2,8 @@ import axios from 'axios'
 import store from '@/store/'
 import jsonBig from 'json-bigint'
 const request = axios.create({
-  baseURL: 'http://ttapi.research.itcast.cn/',
+  // http://ttapi.research.itcast.cn/
+  baseURL: 'http://api-toutiao-web.itheima.net',
   transformResponse: [function (data) {
     try {
       // 如果转换成功则返回转换的数据结果
