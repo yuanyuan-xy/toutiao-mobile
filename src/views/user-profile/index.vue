@@ -29,6 +29,7 @@
      title="性别"
      is-link
      :value="user.gender === 0 ? '男' : '女'"
+     @click="isEditGenderShow = true"
     />
     <van-cell
      title="生日"
@@ -43,24 +44,41 @@
      :style="{ height: '100%' }"
     >
       <edit-name
+      v-if="isEditNameShow"
        @close="isEditNameShow = false"
        v-model="user.name"
       />
     </van-popup>
+    <!-- /修改昵称弹出层 -->
+    <!-- 修改用户性别 -->
+    <van-popup
+     class="edit-name"
+     v-model="isEditGenderShow"
+     position="bottom"
+    >
+      <edit-gender
+       @close="isEditGenderShow = false"
+       v-model="user.gender"
+      />
+    </van-popup>
+    <!-- /修改用户性别 -->
   </div>
 </template>
 
 <script>
 import { getUserProfile } from '@/api/user'
 import EditName from './components/edit-name'
+import EditGender from './components/edit-gender'
 export default {
   name: 'UpdateProfile',
   components: {
-    EditName
+    EditName,
+    EditGender
   },
   data () {
     return {
       isEditNameShow: false,
+      isEditGenderShow: false,
       user: {}
     }
   },
