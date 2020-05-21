@@ -13,7 +13,7 @@
       rows="2"
       autosize
       type="textarea"
-      maxlength="50"
+      maxlength="7"
       show-word-limit
     />
     </div>
@@ -41,12 +41,20 @@ export default {
         message: '修改中',
         forbidclick: true
       })
-      await editUserProfile({ name: this.message })
-      this.$emit('input', this.message)
-      this.$emit('close')
-      this.$toast.success({
-        message: '修改成功'
-      })
+      try {
+        await editUserProfile({ name: this.message })
+        this.$emit('input', this.message)
+        this.$emit('close')
+        this.$toast.success({
+          message: '修改成功'
+        })
+      } catch (err) {
+        if (err && err.response && err.response.status === 409) {
+          this.$toast.fail({
+            message: '用户名已存在'
+          })
+        }
+      }
     }
   }
 }
