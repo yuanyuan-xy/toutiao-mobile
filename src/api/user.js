@@ -58,3 +58,11 @@ export const getUserInfo = userId => {
     url: `/app/v1_0/users/${userId}`
   })
 }
+
+// 获取个人资料
+export const getUserProfile = () => {
+  return request({
+    method: 'GET',
+    url: '/app/v1_0/user/profile'
+  })
+}

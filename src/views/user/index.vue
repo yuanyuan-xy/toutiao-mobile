@@ -131,11 +131,11 @@ export default {
     height: 30px;
   }
 }
-.content {
-  position: fixed;
-  top: 46px;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
-}
+// .content {
+//   position: fixed;
+//   top: 46px;
+//   left: 0;
+//   right: 0;
+//   overflow-y: auto;
+// }
 </style>
